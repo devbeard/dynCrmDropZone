@@ -28,3 +28,7 @@ Usage:
  * The attachment upload will begin
  * The attachment grid (standard component) will refresh for each uploaded attachment
  * Tested with PNG, JPG, XLSX, DOCX, PDF, PPTX, TXT.
+
+Screenshots:
+![File selection](/screenshots/scr0.png?raw=true "File selection")
+![Uploading](/screenshots/scr1.png?raw=true "Uploading")
