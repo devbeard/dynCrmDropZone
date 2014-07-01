@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Dropzone.js</title>
+    <link rel="stylesheet" href="crmDropzone.css"/>
+    <script src="/_static/_common/scripts/jquery1.7.2.min.js?ver=379584759"></script>    
+    <script type="text/javascript" src="crmDropzone.js"></script>
+    <script type="text/javascript">
+        var Xrm;
+        if (window.opener) {
+            Xrm = window.opener.Xrm;
+        }
+        else if (window.parent) {
+            Xrm = window.parent.Xrm;
+        }
+        
+        $(function () {
+            $('#crmDropzone').submit(function(event) {
+                return false;
+            });
+            
+            Dropzone.options.crmDropzone = {
+                paramName: "userFile", // The name that will be used to transfer the file                
+                accept: function(file, done) {                    
+                    createAttachment(file);                                        
+                    done();
+                }
+            };
+        });
+        
+        function createAttachment(file) {
+            var post = Object();            
+            post.Subject = "File Attachment";
+            post.FileName = file.name;
+            post.MimeType = file.type;
+            post.ObjectId = Object();
+            post.ObjectId.LogicalName = Xrm.Page.data.entity.getEntityName();
+            post.ObjectId.Id = Xrm.Page.data.entity.getId();
+            post.ObjectTypeCode = Xrm.Page.data.entity.getEntityName();
+
+            var fileReader = new FileReader();
+
+            fileReader.onload = function (evt) {
+                var resultData = evt.target.result;
+                resultData = resultData.substring(resultData.indexOf(",") + 1);
+                post.Body = resultData;
+                createEntity(post, "ActivityMimeAttachment", "");
+                Xrm.Page.ui.controls.get("attachmentsGrid").refresh();
+            };
+
+            fileReader.readAsDataURL(file);
+        }
+        
+        function createEntity(ent, entName, upd) {
+            var jsonEntity = JSON.stringify(ent);            
+            var createEntityReq = new XMLHttpRequest();
+            var oDataPath = Xrm.Page.context.getServerUrl() + "/XRMServices/2011/OrganizationData.svc";
+            createEntityReq.open("POST", oDataPath + "/" + entName + "Set" + upd, false);
+            createEntityReq.setRequestHeader("Accept", "application/json");
+            createEntityReq.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            createEntityReq.send(jsonEntity);
+            var newEntity = JSON.parse(createEntityReq.responseText).d;
+            return newEntity;
+        }
+    </script>
+</head>
+    <body>        
+        <form class="dropzone" id="crmDropzone" action="/">         
+        </form>
+    </body>
+</html>
