@@ -1,7 +1,7 @@
 dynCrmDropZone
 ==============
 
-DropzoneJS is a javascript library for allow file upload using drag-and-drop as well as multiple file selection (the more traditional way). For sending an email in Dynamics CRM 2011/2013 you are required to click 4-5 times per attachment and multiple attachment in the same click operation is not possible. However, CRM offers an OData endpoint for uploading attachments and this example code (*not yet production ready code*) uses that to allow drag-and-drop and multiple file uploads directly in the email form in a supported manner. 
+DropzoneJS is a javascript library for uploading files using drag-and-drop, as well as multiple file selection (using the more traditional file picker). For uploading attachments to an outgoing email in Dynamics CRM 2011/2013 you are required to click 4-5 times per attachment and multiple attachment in the same operation is not possible. However, CRM offers an OData endpoint for uploading attachments and this example code (**not yet production ready code**) uses that to allow drag-and-drop and multiple file uploads directly in the email form in a supported manner. 
 
 These files were created in a few hours to prove the possibility. They are not yet production ready in quality.
 
